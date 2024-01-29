@@ -8,7 +8,7 @@ private val retrofit = Retrofit.Builder().baseUrl("www.themealdb.com/api/json/v1
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 /*
-The Retrofit Builder() is responsible for preparing the endpoint and adding the Json COnverter.
+The Retrofit Builder() is responsible for preparing the endpoint and adding the Json Converter.
 It then provide create method to gain access to the service methods
  */
 
