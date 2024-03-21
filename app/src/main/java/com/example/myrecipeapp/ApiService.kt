@@ -13,6 +13,7 @@ It then provide create method to gain access to the service methods
  */
 
     val recipeService = retrofit.create(ApiService::class.java)
+// Combining retrofit with ApiService
 
 interface ApiService{
 
