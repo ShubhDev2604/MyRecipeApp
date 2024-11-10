@@ -1,6 +1,7 @@
 package com.example.myrecipeapp
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -28,12 +29,14 @@ import coil.compose.rememberAsyncImagePainter
 For our View in  MVVM we are setting up function RecipeScreen
  */
 @Composable
-fun RecipeScreen(modifier: Modifier = Modifier){
-    val recipeViewModel: MainViewModel = viewModel()
+fun RecipeScreen(modifier: Modifier = Modifier,viewstate: MainViewModel.RecipeState,
+                 navigateToDetail: (Category) -> Unit
+                 ){
+    //val recipeViewModel: MainViewModel = viewModel()
     /*
     Creating an object of MainViewModel type
      */
-    val viewstate by recipeViewModel.categoriesState
+    //val viewstate by recipeViewModel.categoriesState
     /*
     We know that recipeViewModel is an object that have categoriesState to maintain state of our data.
     here we are renaming it by using by keyword to be called as viewstate
@@ -53,14 +56,17 @@ fun RecipeScreen(modifier: Modifier = Modifier){
             }// Text mssg will appear if viewstate.error is not null
             else->{
                 //Display Categories
-                CategoryScreen(categories = viewstate.list)
+                CategoryScreen(categories = viewstate.list,
+                    navigateToDetail)
             }
         }
     }
 }
 
 @Composable
-fun CategoryScreen(categories: List<Category>){
+fun CategoryScreen(categories: List<Category>,
+                   navigateToDetail: (Category) -> Unit
+                   ){
     /*
     To display the List we have made this particular function and we have used LazyVerticalGrid which will
     display two items in a single row and for particular item of the list on how to is be displayed we have
@@ -69,15 +75,18 @@ fun CategoryScreen(categories: List<Category>){
     LazyVerticalGrid(GridCells.Fixed(2), modifier = Modifier.fillMaxSize()){
         items(categories){
             category ->
-            CategoryItem(category = category)
+            CategoryItem(category = category,navigateToDetail)
         }
     }
 }
 
 //How each Items should looks like
 @Composable
-fun CategoryItem(category: Category){
-    Column(modifier = Modifier.padding(8.dp).fillMaxSize(),
+fun CategoryItem(category: Category,navigateToDetail: (Category)-> Unit){
+    Column(modifier = Modifier
+        .padding(8.dp)
+        .fillMaxSize()
+        .clickable { navigateToDetail(category) },
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Image(
